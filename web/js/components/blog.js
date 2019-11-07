@@ -143,7 +143,7 @@ function blog(){
                 very simple. The last priority I have is going to be the scoring 
                 and the reset, as well as any aesthetic problems the game has.
                 See the 
-                <a href="js/tutorial/Simple-Pong-Game-Using-JavaScript.pdf">
+                <a href="js/tutorial/proposal.pdf">
                     document
                 </a> 
                 for more details.

@@ -23,9 +23,15 @@
         
         StringData insertData = gson.fromJson(jsonInsertData, StringData.class);
         
+        System.out.println(insertData.userEmail + ", " + insertData.userPassword + ", " 
+                + insertData.membershipFee + ", " + insertData.birthday + ", " 
+                + insertData.userRoleId + ", ");
+        
         errorMsg = DbMods.insert(insertData, dbc);
         
     }
     
+    out.print(gson.toJson(errorMsg).trim());
+    dbc.close();
 
 %>
