@@ -1,0 +1,60 @@
+.dropdown {
+    position: relative; /* Essential to the workings */
+    
+    display: inline-block;
+    
+    margin-right: 1ex;
+    
+    cursor: pointer;
+}
+
+.drop-header {
+    display:block;
+}
+
+.drop-header a:hover {
+    color: #C0C0C0;
+}
+
+.drop-header p:hover {
+    color: #C0C0C0;
+}
+
+.dropContent {
+    background-color: grey;
+    border-color: black;
+    border: 2px solid;
+    
+    position: absolute;
+    right: 0px;
+    z-index: 3;
+    display: inline-block;
+    text-align: center;
+    
+    margin-top: 19px;
+    padding: 8px;
+    line-height: 1.7em;
+    letter-spacing: 1px;
+    visibility: hidden;
+}
+
+.dropContent a{
+    background-color: grey;
+    border-color: black;
+    border: 1px solid;
+    
+    position: absolute;
+    right: 0px;
+    z-index: 3;
+    display: inline-block;
+    text-align: center;
+    
+    padding: 8px;
+    line-height: 1.7em;
+    letter-spacing: 1px;
+    visibility: hidden;
+}
+
+.dropContent a {
+    color: #C0C0C0;
+}

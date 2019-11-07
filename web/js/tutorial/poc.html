@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <style>
+        #playField {
+          width: 800px;
+          height: 500px;
+          position: relative;
+          background: yellow;
+          border: solid;
+          border-left-style: dotted;
+        }
+        #paddle {
+          width: 25px;
+          height: 125px;
+          position: absolute;
+          background-color: red;
+          /* Needs to be the same initial value as pos */
+          top: 200px;
+          left: 20px;
+        }
+        
+        #ball {
+            width: 15px;
+            height: 15px;
+            background-color: blue;
+            position: absolute;
+            left: 100px;
+            top: 225px;
+        }
+        </style>
+        
+        <title>Pong Game</title>
+    </head>
+<body>
+    
+    <input type="text" id="leftInput" onkeypress="keyPress(event)">
+
+    <div id ="playField">
+        <div id ="paddle"><p style="text-align: center;">|<br><br>|<br><br>|</p></div>
+        <div id="ball"></div>
+    </div>
+    
+    <script>
+        /* Needs to be the same initial value as top value for paddle */
+        var pos = 200;
+        function keyPress(key){
+            
+            var keynum = key.which;
+            var elem = document.getElementById("paddle");
+            var id;
+            
+            if(String.fromCharCode(keynum) === 'w'){
+                console.log("Left player going up");
+                
+                id = setInterval(frameUp, 3);
+                
+            } else if (String.fromCharCode(keynum) === 's'){
+                console.log("Left player going down");
+                
+                id = setInterval(frameDown, 3);
+                
+            } else {
+                console.log("This letter not used");
+            }
+            
+            function frameDown() {
+
+                if (pos === 375) {
+                    clearInterval(id);
+                } else {
+                    elem.style.top = ++pos + 'px'; 
+                } // end if/else block
+            } // end frame function
+            
+            function frameUp() {
+
+                if (pos === 0) {
+                    clearInterval(id);
+                } else {
+                    elem.style.top = --pos + 'px'; 
+                } // end if/else block
+                
+            } // end frame function
+            
+        } // end function keyPress
+    </script>
+    
+    <script>
+        var ball = document.getElementById("ball");
+        var hitRight = false;
+        var hitLeft = true;
+        var hPoz = 0;
+        var id;
+        
+        function moveLeft(){
+            
+        }
+        
+        while(hPoz < 785){
+            ball.style.left = ++hPoz + 'px';
+        } // end while loop
+    </script>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+
+<!-- Hot Pink: #F85AB1 -->
+<!-- Emerald: #50C878 -->
+<!-- Tangerine: #f69659 -->
+<!-- Psych Yellow: #edee50 -->
+<!-- Psych Blue #00f9ff -->
+<!-- Psych Purple: #dd55fe -->
+
+<html>
+    
+    <head>
+        <title>wELCOME tO sUN oRGAN</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <link rel="stylesheet" href="styles/CellView.css" type="text/css">
+        <link rel="stylesheet" href="styles/style.css" type="text/css">
+        <link rel="stylesheet" href="styles/normalView.css" type="text/css">
+        <link rel="stylesheet" href="styles/drop-downs.css" type="text/css">
+        <link rel="stylesheet" href="styles/login.css" type="text/css">
+        
+        
+        <style>
+            
+            a:visited {
+                color: white;
+                text-decoration: none;
+            }
+            
+        </style>
+        
+    </head>
+    
+    <body>
+        
+        <div id="titleNav">
+            
+            <div id="titleBorder">
+                <div id="title">
+                    <a href="#/home">
+                        <p>sUN oRGAN</p>
+                    </a>
+                </div>
+            </div>
+            
+            <div id="nav">
+                <div class="dropdown">
+                    <div class="drop-header" onclick="dropdown('WB')"><a href="#/albums" style="color: white;">aLBUMS v</a></div>
+                    
+                    <div class="dropContent">
+                        
+                        <a id="WB" style="visibility: hidden; width: 130px; border-color: #F85AB1;" onmouseover="dropdown('SOTCI')">
+                            Wooden Brain
+                        </a><br>
+                        <a id="SOTCI" style="visibility: hidden; width: 200px; border-color: #50C878;" onmouseover="dropdown('PITDITD')">
+                            Sun Organ // the City and I
+                        </a><br>
+                        <a id="PITDITD" style="visibility: hidden; border-color: #f69659;" onmouseover="dropdown('SDFR')">
+                            People in the Distance in the Dark
+                        </a><br>
+                        <a id="SDFR" style="visibility: hidden; width: 250px; border-color: #edee50;" onmouseover="dropdown('YD')">
+                            Something Doesn't Feel Right
+                        </a><br>
+                        <a id="YD" style="visibility: hidden; border-color: #00f9ff;" onmouseover="dropdown('SO')">
+                            YOUR DOOMED
+                        </a><br>
+                        <a id="SO" style="visibility: hidden; border-color: #d55fe3;">
+                            Sun Organ
+                        </a><br>
+                        
+                    </div>
+                </div>
+                    &nbsp; | &nbsp;
+                <div class="dropdown">
+                    <div class="drop-header"><a href="js/tutorial/poc.html">pONG</a></div>
+                </div>
+                    &nbsp; | &nbsp;
+                <div class="dropdown">
+                    <div class="drop-header"><a href="#/blog">bLOG</a></div>
+                </div>
+                &nbsp; | &nbsp;
+                <div class="dropdown">
+                    <div class="drop-header" onclick="dropdown('allUsers')">
+                        <p style="color: white;">aCCOUNT v</p>
+                    </div>
+                    
+                    <div class="dropContent">
+                        <a id="allUsers" href="#/users" style="visibility: hidden; width: 120px; border-color: #f69659;" onmouseover="dropdown('login')">
+                            uSERS
+                        </a><br>
+                        <a id="login" href="#/login" style="visibility: hidden; width: 140px; border-color: #50C878;" onmouseover="dropdown('search')">
+                            lOG iN
+                        </a><br>
+                        <a id="search" href="#/search" style="visibility: hidden; width: 130px; border-color: #F85AB1;" onmouseover="dropdown('profile')">
+                            sEARCH
+                        </a><br>
+                        <a id="profile" href="#/profile" style="visibility: hidden; width: 150px; border-color: #dd55fe;" onmouseover="dropdown('logoff')">
+                            pROFILE
+                        </a><br>
+                        <a id="logoff" href="#/logoff" style="visibility: hidden; width: 150px; border-color: #edee50;">
+                            lOGG oFF
+                        </a>
+                    </div>
+                    
+                </div>
+                &nbsp; | &nbsp;
+                <div class="dropdown">
+                    <div class="drop-header"><a href="#/home">hOME</a></div>
+                </div>
+                &nbsp; &nbsp;
+            </div>
+            
+        </div>
+        
+        <div style="border-bottom: 2px solid #F85AB1"></div> <!-- HOT PINK -->
+        <div style="border-bottom: 3px solid #50C878"></div> <!-- EMERALD -->
+        <div style="border-bottom: 5px solid #f69659"></div> <!-- TANGERINE -->
+        
+        <div id="view"></div>
+        
+        <div id="footer">
+            mATTHEW jORDAN
+        </div>
+        
+        <script src="js/dropdownFw.js"></script>
+        <script>
+            
+            "use strict";
+            
+            dropdown();
+            
+        </script>
+        
+        <script src="js/components/home.js"></script>
+        <script src="js/components/blog.js"></script>
+        <script src="js/components/users.js"></script>
+        <script src="js/components/albums.js"></script>
+        <script src="js/components/login.js"></script>
+        <script src="js/components/profile.js"></script>
+        <script src="js/components/logoff.js"></script>
+        <script src="js/deleteThis.js"></script>
+        <script src="js/deleteUser.js"></script>
+        
+        <script src="js/MakeTableBuilder.js"></script>
+        <script src="js/ajax2.js"></script>
+        
+        
+        <script>
+            
+            "use strict";
+            
+            // Declare array to store our routes
+            var routes = [];
+            
+            // with JS assosiative arrays, the keys look like index values - its like a hash map
+            routes['/'] = home;     // refers to the function in home.js
+            routes['/home'] = home;
+            routes['/blog'] = blog;
+            routes['/users'] = users.list;
+            routes['/albums'] = albums.list;
+            routes['/login'] = login;
+            routes['/search'] = users.findUI;
+            routes['/profile'] = profile;
+            routes['/logoff'] = logoff;
+            //routes['/pong'] = pong;
+            
+            console.log("Routes:");
+            console.log(routes);
+            
+            function router() {
+                
+                console.log("location.hash (the link that was clicked) is " + location.hash);
+                
+                // remove leading # from string that holds the clicked link
+                var path = location.hash.slice(1) || '/';
+                console.log("path (with no # is " + path);
+                
+                if(!routes[path]){
+                    document.getElementById("view").innerHTML = "<p>YO THE PATH: "
+                            + path + " WAS NEVER ADDED TO THE ROUTE ARRAY IDIOT!!</p>";
+                } else {
+                    // this function must be manually added to the routes array above
+                    routes[path](); // invoke the function defined in a javascript file
+                }
+                
+            } // end router function
+            
+            // add the event listener to tags with '#' in the href property
+            window.addEventListener('hashchange', router);
+            
+            // default page
+            window.location.hash = '/home';
+            
+            var tableBuilder = MakeTableBuilder("");
+            
+        </script>
+        
+    </body>
+</html>
