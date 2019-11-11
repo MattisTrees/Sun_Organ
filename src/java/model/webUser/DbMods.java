@@ -118,9 +118,9 @@ public class DbMods {
             
             pStatement.setString(1, inputData.userEmail);
             pStatement.setString(2, inputData.userPassword);
-            pStatement.setString(3, inputData.membershipFee);
-            pStatement.setString(4, inputData.birthday);
-            pStatement.setString(5, inputData.userRoleId);
+            pStatement.setBigDecimal(3, ValidationUtils.decimalConversion(inputData.membershipFee));
+            pStatement.setDate(4, ValidationUtils.dateConversion(inputData.birthday));
+            pStatement.setInt(5, ValidationUtils.integerConversion(inputData.userRoleId));
             
             int numRows = pStatement.executeUpdate();
             

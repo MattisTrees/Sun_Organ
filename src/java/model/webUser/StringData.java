@@ -38,7 +38,7 @@ public class StringData {
             this.webUserId = FormatUtils.plainInteger(results.getObject("web_user_id"));
             this.userEmail = FormatUtils.formatString(results.getObject("user_email"));
             this.userPassword = FormatUtils.formatString(results.getObject("user_password"));
-            this.userPassword2 = FormatUtils.formatString(results.getObject("user_password2"));
+            //this.userPassword2 = FormatUtils.formatString(results.getObject("user_password2"));
             this.image = FormatUtils.formatString(results.getObject("image"));
             this.birthday = FormatUtils.formatDate(results.getObject("birthday"));
             this.membershipFee = FormatUtils.formatDollar(results.getObject("membership_fee"));
