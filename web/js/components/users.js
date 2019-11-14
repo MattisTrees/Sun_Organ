@@ -100,7 +100,6 @@ users.findUI = function () {
 };
 
 // This public function of global object will be called when the user clicks the button created just above.
-// This function will 
 users.findById = function (idOfInput) {
 
     console.log("users.findBtUd was called");
@@ -148,26 +147,82 @@ users.findById = function (idOfInput) {
         }
 
     } // end of function success
-};  // users.findUI
+    };  // users.findbyId
 
-
-/* Example of URL invoking the Find Web API and it's response...
- * // http://localhost:8080/3308_05a_find_sample/webAPIs/getUserByIdAPI.jsp?URLid=4
- 
- {
- "dbError": "",
- "webUserList": [
- {
- "webUserId": "4",
- "userEmail": "donald@whiteHouse.gov",
- "userPassword": "whoCares",
- "image": "https://petapixel.com/assets/uploads/2017/01/Donald_Trump_official_portraitt.jpg",
- "birthday": "02/03/1950",
- "membershipFee": "",
- "userRoleId": "2",
- "userRoleType": "Edit",
- "errorMsg": ""
- }
- ]
- }
- */
+users.insertUI = function(targetId) {
+    console.log("user.insertUI function called - targetId is " + targetId);
+  
+    var interface = `<div="insertArea">
+        <br>
+        <table>
+            <tr>
+                <td>Birthday</td>
+                <td><input type="text" id ="birthday" /></td>
+                <td id="birthdayError"></td>
+            </tr>
+            <tr>
+                <td>Password</td>
+                <td><input type="password" id="userPassword"/></td>
+                <td id="userPasswordError" class="error"></td>
+            </tr>
+            <tr>
+                <td>Retype Your Password</td>
+                <td><input type="password" id="userPassword2" /></td>
+                <td id="userPassword2Error" class="error"></td>
+            </tr>
+            <tr>
+                <td>Birthday</td>
+                <td><input type="text" id="birthday" /></td>
+                <td id="birthdayError" class="error"></td>
+            </tr>
+            <tr>
+                <td>Membership Fee</td>
+                <td><input type="text" id="membershipFee" /></td>
+                <td id="membershipFeeError" class="error"></td>
+            </tr>
+            <tr>
+                <td>User Role</td>
+                <td>
+                <select id="rolePickList">
+                <!-- JS code will make ajax call to populate select tag's options with roles -->
+                </select>
+                </td>
+                <td id="userRoleIdError" class="error"></td>
+            </tr>
+            <tr>
+            <td><button onclick="users.insertSave()">Save</button></td>
+                <td id="recordError" class="Error"></td>
+                <td></td>
+            </tr>
+        </table>
+    
+    </div>`;
+    
+    document.getElementById(targetId).innerHTML = interface;
+    
+    ajax2({
+        url: "webAPIs/getRolesAPI.jsp",
+        successFn: setRolePickList,
+        errorId: "userRoleIdError"
+    });
+        
+    function setRolePickList(jsonObj) {
+        
+        console.log("setrolePickList has been called, Matt!");
+        console.log(jsonObj);
+        
+        if(jsonObj.dbError.length > 0) {
+            document.getElementById("userRoleError").innerHTML = jsonObj.dbError;
+            return;
+        } // end if
+        
+        Utils.makePickList({
+            id: "rolePickList",
+            list: jsonObj.roleList,
+            valueProp: "userRoleType",
+            keyProp: "userroleId"
+        });
+        
+    } // end setRolePickList
+        
+}; // end users.insertUI
