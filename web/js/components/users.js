@@ -1,7 +1,10 @@
 var users = {};
 
-users.list = function () {
+(function () {  // This is an IIFE, an immediately executing (anonymous) function
+    //alert("I am an IIFE!");
 
+    users.list = function () {
+        
     // clear out whatever may be currently in the content area
     var contentDOM = document.getElementById("view");
     contentDOM.innerHTML = "";
@@ -77,8 +80,8 @@ users.list = function () {
         });
     } // end of function success
 
-}; // end of function users.list
 
+}; // end of function users.list
 
 // Inject the UI that allows the user to type in an id and click submit.
 users.findUI = function () {
@@ -149,20 +152,43 @@ users.findById = function (idOfInput) {
     } // end of function success
     };  // users.findbyId
 
-users.insertUI = function(targetId) {
-    console.log("user.insertUI function called - targetId is " + targetId);
-  
-    var interface = `<div="insertArea">
-        <br>
+
+// ***** NEW from HW 4 display data *****
+// invoke a web API passing in userId to say which record you want to delete. 
+// but also remove the row (of the clicked upon icon) from the HTML table -- if Web API sucessful... 
+    users.delete = function (userId, icon) {
+        if (confirm("Do you really want to delete user " + userId + "? ")) {
+            console.log("icon that was passed into JS function is printed on next line");
+            console.log(icon);
+
+            // HERE YOU HAVE TO CALL THE DELETE API and the success function should run the 
+            // following (delete the row that was clicked from the User Interface).
+
+            // icon's parent is cell whose parent is row 
+            var dataRow = icon.parentNode.parentNode;
+            var rowIndex = dataRow.rowIndex - 1; // adjust for oolumn header row?
+            var dataTable = dataRow.parentNode;
+            dataTable.deleteRow(rowIndex);
+            alert("Note: this version of the sample code does NOT actually invoke the delete Web API so row will reappear when you refresh the data");
+        }
+
+    }; // end of users.delete
+
+    users.insertUI = function () {
+        console.log("users.inusertUI function - targetId is view");
+
+        var html = `
+    <div id="insertArea">
+        <br/>
         <table>
             <tr>
-                <td>Birthday</td>
-                <td><input type="text" id ="birthday" /></td>
-                <td id="birthdayError"></td>
+                <td>Email Address</td>
+                <td><input type="text"  id="userEmail" /></td>
+                <td id="userEmailError" class="error"></td> 
             </tr>
             <tr>
                 <td>Password</td>
-                <td><input type="password" id="userPassword"/></td>
+                <td><input type="password"  id="userPassword" /></td>
                 <td id="userPasswordError" class="error"></td>
             </tr>
             <tr>
@@ -173,7 +199,7 @@ users.insertUI = function(targetId) {
             <tr>
                 <td>Birthday</td>
                 <td><input type="text" id="birthday" /></td>
-                <td id="birthdayError" class="error"></td>
+                <td id="birthdayError" class="error"></td> 
             </tr>
             <tr>
                 <td>Membership Fee</td>
@@ -183,46 +209,135 @@ users.insertUI = function(targetId) {
             <tr>
                 <td>User Role</td>
                 <td>
-                <select id="rolePickList">
-                <!-- JS code will make ajax call to populate select tag's options with roles -->
-                </select>
+                    <select id="rolePickList">
+                    <!-- JS code will make ajax call to get all the roles 
+                    then populate this select tag's options with those roles -->
+                    </select>
                 </td>
                 <td id="userRoleIdError" class="error"></td>
             </tr>
             <tr>
-            <td><button onclick="users.insertSave()">Save</button></td>
-                <td id="recordError" class="Error"></td>
+                <!-- see js/insertUser.js to see the insertUser function (make sure index.html references the js file) -->
+                <td><button onclick="users.insertSave()">Save</button></td>
+                <td id="recordError" class="error"></td>
                 <td></td>
             </tr>
         </table>
-    
-    </div>`;
-    
-    document.getElementById(targetId).innerHTML = interface;
-    
-    ajax2({
-        url: "webAPIs/getRolesAPI.jsp",
-        successFn: setRolePickList,
-        errorId: "userRoleIdError"
-    });
-        
-    function setRolePickList(jsonObj) {
-        
-        console.log("setrolePickList has been called, Matt!");
-        console.log(jsonObj);
-        
-        if(jsonObj.dbError.length > 0) {
-            document.getElementById("userRoleError").innerHTML = jsonObj.dbError;
-            return;
-        } // end if
-        
-        Utils.makePickList({
-            id: "rolePickList",
-            list: jsonObj.roleList,
-            valueProp: "userRoleType",
-            keyProp: "userroleId"
+    </div>
+    `;
+        document.getElementById("view").innerHTML = html;
+
+        ajax2({
+            url: "webAPIs/getRolesAPI.jsp",
+            successFn: setRolePickList,
+            errorId: "userRoleIdError"
         });
-        
-    } // end setRolePickList
-        
-}; // end users.insertUI
+
+        function setRolePickList(jsonObj) {
+
+            console.log("setRolePickList was called, see next line for object holding list of roles");
+            console.log(jsonObj);
+
+            if (jsonObj.dbError.length > 0) {
+                document.getElementById("userRoleIdError").innerHTML = jsonObj.dbError;
+                return;
+            }
+
+            /*  copy/pasting the first entry from the output of my get role API
+             {
+             "dbError": "",
+             "roleList": [
+             {
+             "userRoleId": "1",
+             "userRoleType": "Admin",
+             "errorMsg": ""
+             }, ...
+             */
+
+            Utils.makePickList({
+                id: "rolePickList",
+                list: jsonObj.roleList,
+                valueProp: "userRoleType",
+                keyProp: "userRoleId"
+            });
+
+        } // setRolePickList
+
+    }; // users.insertUI
+
+
+    // a private function
+    function getUserDataFromUI() {
+
+        // New code for handling role pick list.
+        var ddList = document.getElementById("rolePickList");
+
+        // create a user object from the values that the user has typed into the page.
+        var userInputObj = {
+
+            "userEmail": document.getElementById("userEmail").value,
+            "userPassword": document.getElementById("userPassword").value,
+            "userPassword2": document.getElementById("userPassword2").value,
+            "birthday": document.getElementById("birthday").value,
+            "membershipFee": document.getElementById("membershipFee").value,
+
+            // Modification here for role pick list
+            //"userRoleId": document.getElementById("userRoleId").value,
+            "userRoleId": ddList.options[ddList.selectedIndex].value,
+
+            "userRoleType": "",
+            "errorMsg": ""
+        };
+
+        console.log(userInputObj);
+
+        // JSON.stringify converts the javaScript object into JSON format 
+        // (the reverse operation of what gson does on the server side).
+        // 
+        // Then, you have to encode the user's data (encodes special characters 
+        // like space to %20 so the server will accept it with no security error. 
+        return encodeURIComponent(JSON.stringify(userInputObj));
+        //return escape(JSON.stringify(userInputObj));
+    }
+
+    function writeErrorObjToUI(jsonObj) {
+        console.log("here is JSON object (holds error messages.");
+        console.log(jsonObj);
+
+        document.getElementById("userEmailError").innerHTML = jsonObj.userEmail;
+        document.getElementById("userPasswordError").innerHTML = jsonObj.userPassword;
+        document.getElementById("userPassword2Error").innerHTML = jsonObj.userPassword2;
+        document.getElementById("birthdayError").innerHTML = jsonObj.birthday;
+        document.getElementById("membershipFeeError").innerHTML = jsonObj.membershipFee;
+        document.getElementById("userRoleIdError").innerHTML = jsonObj.userRoleId;
+        document.getElementById("recordError").innerHTML = jsonObj.errorMsg;
+    }
+
+    users.insertSave = function () {
+
+        console.log("users.insertSave was called");
+
+        // create a user object from the values that the user has typed into the page.
+        var myData = getUserDataFromUI();
+
+        ajax2({
+            url: "webAPIs/insertUserAPI.jsp?jsonData=" + myData,
+            successFn: processInsert,
+            errorId: "recordError"
+        });
+
+        function processInsert(jsonObj) {
+
+            // the server prints out a JSON string of an object that holds field level error 
+            // messages. The error message object (conveniently) has its fiels named exactly 
+            // the same as the input data was named. 
+
+            if (jsonObj.errorMsg.length === 0) { // success
+                jsonObj.errorMsg = "Record successfully inserted !!!";
+            }
+
+            writeErrorObjToUI(jsonObj);
+        }
+    };
+
+}());  // the end of the IIFE

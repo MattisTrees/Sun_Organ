@@ -81,11 +81,14 @@
                 </div>
                 &nbsp; | &nbsp;
                 <div class="dropdown">
-                    <div class="drop-header" onclick="dropdown('allUsers')">
+                    <div class="drop-header" onclick="dropdown('register')">
                         <p style="color: white;">aCCOUNT v</p>
                     </div>
                     
                     <div class="dropContent">
+                        <a id="register" href="#/userInsert" style="visibility: hidden; width: 120px; border-color: #00f9ff;" onmouseover="dropdown('allUsers')">
+                            rEGISTER
+                        </a><br>
                         <a id="allUsers" href="#/users" style="visibility: hidden; width: 120px; border-color: #f69659;" onmouseover="dropdown('login')">
                             uSERS
                         </a><br>
@@ -141,6 +144,7 @@
         <script src="js/components/logoff.js"></script>
         <script src="js/deleteThis.js"></script>
         <script src="js/deleteUser.js"></script>
+        <script src="js/Utils.js"></script>
         
         <script src="js/MakeTableBuilder.js"></script>
         <script src="js/ajax2.js"></script>
@@ -163,6 +167,7 @@
             routes['/search'] = users.findUI;
             routes['/profile'] = profile;
             routes['/logoff'] = logoff;
+            routes['/userInsert'] = users.insertUI;
             //routes['/pong'] = pong;
             
             console.log("Routes:");
