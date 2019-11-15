@@ -201,6 +201,36 @@ function blog(){
     
         </div>
     
+        <div class="post">
+    
+            <h1>Homework 8 - Insert</h1>
+    
+            <h3>What I learned</h3>
+            <p>
+                I learned how to automate database insertions. I think this project
+                will be a great addition to my portfolio as I've realized that it's
+                pretty much your basic CRUD application and from what I understand
+                it's that most web apps are exactly that. I learned more about the
+                javascript language and more and more reasons why I don't like it.
+                I learned a little bit about how to make a pick list and how to populate
+                it. I don't thin its totally worth it to make a pick list (unless
+                there is some other simpler way to do it as you need to have several
+                other files and database calls just to populate it. I imagine it 
+                might be more effecient to keep more things in the session object
+                for more local access to make things like this a little simpler.
+            </p>
+    
+            <h3>What if found easy/hard</h3>
+            <p>
+                This one was pretty crazy. I still don't think I fully understand 
+                ajax calls, or how gson->json->gson conversion happens. The difficult
+                parts were trying to figure out how some of the tools provided by
+                the professor work, things like validation, and her dbmods in the model
+                package. Once I figured that out then It all came together.'
+            </p>
+    
+        </div>
+    
     </div> <!-- Blog-Wrapper div -->
         
 `;
