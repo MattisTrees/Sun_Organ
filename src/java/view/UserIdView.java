@@ -26,7 +26,7 @@ public class UserIdView {
             stmt.close();
         } catch (Exception e) {
             StringData sd = new StringData();
-            sd.errorMsg = "Exception thrown in RoleView.allRolesAPI(): " + e.getMessage();
+            sdl.errorMsg = "Exception thrown in RoleView.allRolesAPI(): " + e.getMessage();
             sdl.add(sd);
         }
         return sdl;
