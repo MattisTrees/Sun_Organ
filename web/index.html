@@ -46,28 +46,17 @@
             
             <div id="nav">
                 <div class="dropdown">
-                    <div class="drop-header" onclick="dropdown('WB')"><a href="#/albums" style="color: white;">aLBUMS v</a></div>
+                    <div class="drop-header" onclick="dropdown('list')"><a>aLBUMS v</a></div>
                     
                     <div class="dropContent">
                         
-                        <a id="WB" style="visibility: hidden; width: 130px; border-color: #F85AB1;" onmouseover="dropdown('SOTCI')">
-                            Wooden Brain
+                        <a id="list" style="visibility: hidden; width: 130px; border-color: #F85AB1;" onmouseover="dropdown('insert')" href="#/albums">
+                            lIST aLBUMS
                         </a><br>
-                        <a id="SOTCI" style="visibility: hidden; width: 200px; border-color: #50C878;" onmouseover="dropdown('PITDITD')">
-                            Sun Organ // the City and I
+                        <a id="insert" style="visibility: hidden; width: 130px; border-color: #edee50;" onmouseover="dropdown('')" href="#/albumInsert">
+                            iNSERT aLBUMS
                         </a><br>
-                        <a id="PITDITD" style="visibility: hidden; border-color: #f69659;" onmouseover="dropdown('SDFR')">
-                            People in the Distance in the Dark
-                        </a><br>
-                        <a id="SDFR" style="visibility: hidden; width: 250px; border-color: #edee50;" onmouseover="dropdown('YD')">
-                            Something Doesn't Feel Right
-                        </a><br>
-                        <a id="YD" style="visibility: hidden; border-color: #00f9ff;" onmouseover="dropdown('SO')">
-                            YOUR DOOMED
-                        </a><br>
-                        <a id="SO" style="visibility: hidden; border-color: #d55fe3;">
-                            Sun Organ
-                        </a><br>
+                        
                         
                     </div>
                 </div>
@@ -168,6 +157,7 @@
             routes['/profile'] = profile;
             routes['/logoff'] = logoff;
             routes['/userInsert'] = users.insertUI;
+            routes['/albumInsert'] = albums.insertUI;
             //routes['/pong'] = pong;
             
             console.log("Routes:");

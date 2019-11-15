@@ -74,3 +74,93 @@ albums.list = function () {
     } // end of function success
 
 }; // end of function Albums.list
+
+albums.insertUI = function () {
+        console.log("users.inusertUI function - targetId is view");
+
+        var html = `
+    <div id="insertArea">
+        <br/>
+        <table>
+            <tr>
+                <td>Album Name</td>
+                <td><input type="text"  id="albumName" /></td>
+                <td id="albumNameError" class="error"></td> 
+            </tr>
+            <tr>
+                <td>Number of Tracks</td>
+                <td><input type="text" id="numTracks" /></td>
+                <td id="tracksError" class="error"></td>
+            </tr>
+            <tr>
+                <td>Album Art</td>
+                <td><input type="text" id="albumArt" /></td>
+                <td id="artError" class="error"></td> 
+            </tr>
+            <tr>
+                <td>Release Date</td>
+                <td><input type="text" id="releaseDate" /></td>
+                <td id="releaseError" class="error"></td>
+            </tr>
+            <tr>
+                <td>Suggested Price</td>
+                <td><input type="text" id="price" /></td>
+                <td id="priceError" class="error"></td>
+            </tr>
+            <tr>
+                <td>User</td>
+                <td>
+                    <select id="userPickList">
+                    <!-- JS code will make ajax call to get all the users 
+                    then populate this select tag's options with those users -->
+                    </select>
+                </td>
+                <td id="userIdError" class="error"></td>
+            </tr>
+            <tr>
+                <td><button onclick="albums.insertSave()">Save</button></td>
+                <td id="recordError" class="error"></td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+    `;
+        document.getElementById("view").innerHTML = html;
+
+        ajax2({
+            url: "webAPIs/getUsersAPI.jsp",
+            successFn: setUserPickList,
+            errorId: "userIdError"
+        });
+
+        function setUserPickList(jsonObj) {
+
+            console.log("setRolePickList was called, see next line for object holding list of roles");
+            console.log(jsonObj);
+
+            if (jsonObj.dbError.length > 0) {
+                document.getElementById("userRoleIdError").innerHTML = jsonObj.dbError;
+                return;
+            }
+
+            /*  copy/pasting the first entry from the output of my get role API
+             {
+             "dbError": "",
+             "roleList": [
+             {
+             "userRoleId": "1",
+             "userRoleType": "Admin",
+             "errorMsg": ""
+             }, ...
+             */
+
+            Utils.makePickList({
+                id: "rolePickList",
+                list: jsonObj.roleList,
+                valueProp: "userRoleType",
+                keyProp: "userRoleId"
+            });
+
+        } // setRolePickList
+
+    }; // users.insertUI
