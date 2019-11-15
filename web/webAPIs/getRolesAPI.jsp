@@ -20,7 +20,7 @@
 
     // PREVENT DB connection leaks:
     dbc.close(); // EVERY code path that opens a db connection, must also close it.
-
+    
     Gson gson = new Gson();
-    out.print(gson.toJson(list).trim()); 
+    out.print(gson.toJson(list).trim());
 %>

@@ -15,7 +15,7 @@ public class UserIdView {
         StringDataList sdl = new StringDataList();
         try {
             String sql = "SELECT web_user_id "+
-                    "FROM albums ORDER BY web_user_id ";  // you always want to order by something, not just random order.
+                    "FROM albums GROUP BY web_user_id ORDER BY web_user_id ";  // you always want to order by something, not just random order.
             PreparedStatement stmt = dbc.getConn().prepareStatement(sql);
             ResultSet results = stmt.executeQuery();
             while (results.next()) {
@@ -25,7 +25,7 @@ public class UserIdView {
             stmt.close();
         } catch (Exception e) {
             StringData sd = new StringData();
-            sd.errorMsg = "Exception thrown in RoleView.allRolesAPI(): " + e.getMessage();
+            sd.errorMsg = "Exception thrown in UserIdView.UserIdPickListAPI(): " + e.getMessage();
             sdl.add(sd);
         }
         return sdl;

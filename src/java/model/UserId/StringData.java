@@ -12,7 +12,7 @@ import java.sql.ResultSet;
 
 public class StringData {
 
-    public String userRoleId = ""; 
+    public String UserId = ""; 
 
     public String errorMsg = "";
 
@@ -23,9 +23,9 @@ public class StringData {
     // overloaded constructor sets all data members by extracting from resultSet.
     public StringData(ResultSet results) {
         try {
-            this.userRoleId = FormatUtils.formatInteger(results.getObject("user_role_id"));
+            this.UserId = FormatUtils.formatInteger(results.getObject("web_user_id"));
         } catch (Exception e) {
-            this.errorMsg = "Exception thrown in model.role.StringData (the constructor"
+            this.errorMsg = "Exception thrown in model.UserId.StringData (the constructor"
                     + "for model.UserId.StringData that takes a ResultSet): "
                     + e.getMessage();
         }
@@ -33,6 +33,6 @@ public class StringData {
 
     @Override
     public String toString() {
-        return ", User Role Id: " + this.userRoleId;
+        return ", User Id: " + this.UserId;
     }
 }

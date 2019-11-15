@@ -128,14 +128,14 @@ albums.insertUI = function () {
         document.getElementById("view").innerHTML = html;
 
         ajax2({
-            url: "webAPIs/getUsersAPI.jsp",
+            url: "webAPIs/userIdPickListAPI.jsp",
             successFn: setUserPickList,
             errorId: "userIdError"
         });
 
         function setUserPickList(jsonObj) {
 
-            console.log("setRolePickList was called, see next line for object holding list of roles");
+            console.log("setuserPickList was called, see next line for object holding list of roles");
             console.log(jsonObj);
 
             if (jsonObj.dbError.length > 0) {
@@ -155,12 +155,81 @@ albums.insertUI = function () {
              */
 
             Utils.makePickList({
-                id: "rolePickList",
-                list: jsonObj.roleList,
-                valueProp: "userRoleType",
-                keyProp: "userRoleId"
+                id: "userPickList",
+                list: jsonObj.UserIdList,
+                valueProp: "UserId",
+                keyProp: "UserId"
             });
 
         } // setRolePickList
 
-    }; // users.insertUI
+    }; // albums.insertUI
+    
+albums.getAlbumDataFromUI = function() {
+
+        // New code for handling user pick list.
+        var ddList = document.getElementById("userPickList");
+
+        // create a user object from the values that the user has typed into the page.
+        var userInputObj = {
+
+            "album_name": document.getElementById("albumName").value,
+            "num_tracks": document.getElementById("numTracks").value,
+            "album_art": document.getElementById("albumArt").value,
+            "release_date": document.getElementById("releaseDate").value,
+            "suggested_price": document.getElementById("price").value,
+
+            // Modification here for user pick list
+            "web_user_id": ddList.options[ddList.selectedIndex].value,
+
+            "errorMsg": ""
+        };
+
+        console.log(userInputObj);
+
+        return encodeURIComponent(JSON.stringify(userInputObj));
+        //return JSON.stringify(userInputObj);
+    }; // end getAlbumDataFromUI method
+    
+albums.writeErrorObjToUI = function(jsonObj) {
+    
+        console.log("here is the JSON object (holds error messages)");
+        console.log(jsonObj);
+
+        document.getElementById("albumNameError").innerHTML = jsonObj.album_name;
+        document.getElementById("tracksError").innerHTML = jsonObj.num_tracks;
+        document.getElementById("artError").innerHTML = jsonObj.album_art;
+        document.getElementById("releaseError").innerHTML = jsonObj.release_date;
+        document.getElementById("priceError").innerHTML = jsonObj.suggested_price;
+        document.getElementById("userIdError").innerHTML = jsonObj.web_user_id;
+        document.getElementById("recordError").innerHTML = jsonObj.errorMsg;
+        
+    }; // end writeErrorObjToUI function
+    
+albums.insertSave = function () {
+    
+    console.log("albums.insertSave called!");
+    
+    var newAlbum = albums.getAlbumDataFromUI();
+    
+    console.log("After Calling Stringify: " + newAlbum);
+    
+    ajax2({
+            url: "webAPIs/insertAlbumAPI.jsp?jsonData=" + newAlbum,
+            successFn: processInsert,
+            errorId: "recordError"
+        });
+        
+    
+    function processInsert(jsonObj){
+        
+        
+            if (jsonObj.errorMsg.length === 0) { // success
+                jsonObj.errorMsg = "Record successfully inserted !!!";
+            }
+
+            albums.writeErrorObjToUI(jsonObj);
+        
+    } // end processInsert function
+    
+}; // end albums.insertSave

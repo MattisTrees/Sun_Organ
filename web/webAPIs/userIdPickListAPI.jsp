@@ -14,7 +14,7 @@
 
     if (list.dbError.length() == 0) { // if got good DB connection,
 
-        System.out.println("*** Ready to call allRolesAPI");
+        System.out.println("*** Ready to call userIdPickListAPI");
         list = UserIdView.UserIdPickListAPI(dbc);  
     } 
 
