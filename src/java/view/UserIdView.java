@@ -1,7 +1,6 @@
 package view;
 
 // classes imported from java.sql.*
-import model.UserId.StringData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import model.UserId.*;
@@ -11,7 +10,7 @@ import dbUtils.*;
 
 public class UserIdView {
 
-    public static StringDataList allRolesAPI(DbConn dbc) {
+    public static StringDataList UserIdPickListAPI(DbConn dbc) {
 
         StringDataList sdl = new StringDataList();
         try {
@@ -26,7 +25,7 @@ public class UserIdView {
             stmt.close();
         } catch (Exception e) {
             StringData sd = new StringData();
-            sdl.errorMsg = "Exception thrown in RoleView.allRolesAPI(): " + e.getMessage();
+            sd.errorMsg = "Exception thrown in RoleView.allRolesAPI(): " + e.getMessage();
             sdl.add(sd);
         }
         return sdl;
