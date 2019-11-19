@@ -12,7 +12,8 @@ table {
 }
 
 td {
-    border: 2px solid;
+    background-color: #CCCCCC;
+    padding: 5px;
 }
 
 #titleNav {

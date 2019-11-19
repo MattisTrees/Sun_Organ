@@ -1,0 +1,31 @@
+albums.updateUI = function (albumInfo){
+    
+    window.location.hash = "#/albumUpdate";
+    
+    albums.insertUI(true);
+    
+    //proeed(albumInfo);
+    
+//    ajax2({
+//        url: "webAPIs/getAlbumWithUsersAPI.jsp?id=" + albumInfo,
+//        successFn: proceed,
+//        errorId: "ajaxError"
+//    });
+    
+    // * * * THINK ABOUT WHAT KIND OF OBJECT YOU NEED TO MANIPULATE * * * 
+    function proceed (obj){
+        /* * * POPULATE THE TABLE WITH THIS INFO AND GET ONLY THE LIST OF WEB USERS FROM ANOTHER QUERY * * *  
+        AlbumList[i].album_id = obj.albumList[i].album_id;
+            AlbumList[i].album_name = "<p class=album>" + obj.albumList[i].album_name + "</p>";
+            AlbumList[i].num_tracks = obj.albumList[i].num_tracks;
+            AlbumList[i].album_art = obj.albumList[i].album_art;
+            AlbumList[i].release_date = obj.albumList[i].release_date;
+        */
+       
+        document.getElementById("albumId").value = albumInfo.album_id;
+        document.getElementById("albumName").value = albumInfo.album_name;
+        document.getElementById("numTracks").value = albumInfo.num_tracks;
+        document.getElementById("albumArt").value = albumInfo.album_art;
+        document.getElementById("releaseDate").value = albumInfo.release_date;
+    } // end proceed method
+}; // end albums.updateUI

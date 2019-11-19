@@ -48,7 +48,9 @@ albums.list = function () {
             AlbumList[i].album_art = obj.albumList[i].album_art;
             AlbumList[i].release_date = obj.albumList[i].release_date;
             AlbumList[i].web_user_id = obj.albumList[i].web_user_id;
+            
             AlbumList[i].Delete = ("<h2 onclick=\"deleteThis(" + AlbumList[i].album_id + ")\">X</h2>");
+            AlbumList[i].Update = ("<h2 onclick= \"albums.updateUI(" + AlbumList[i].album_id + ")\">U</h2");
             //AlbumList[i].Delete.what = AlbumList[i].album_name;
         }
 
@@ -75,13 +77,27 @@ albums.list = function () {
 
 }; // end of function Albums.list
 
-albums.insertUI = function () {
+albums.insertUI = function (isUpdate) {
         console.log("users.inusertUI function - targetId is view");
+        
+                
+        var albumIdRowStyle = ' style="display:none" ';
+        var saveFn = "users.insertSave()";
+        
+        if(isUpdate){
+            albumIdRowStyle = "";
+            saveFn = "users.updateSave()";
+        }
 
         var html = `
     <div id="insertArea">
         <br/>
         <table>
+               <tr ${albumIdRowStyle}>
+                <td>Web User Id</td>
+                <td><input type="text" id="albumId" disabled /></td>
+                <td id="webUserIdError" class="error"></td>
+            </tr>
             <tr>
                 <td>Album Name</td>
                 <td><input type="text"  id="albumName" /></td>
@@ -118,7 +134,7 @@ albums.insertUI = function () {
                 <td id="userIdError" class="error"></td>
             </tr>
             <tr>
-                <td><button onclick="albums.insertSave()">Save</button></td>
+                <td><button onclick="${saveFn}">Save</button></td>
                 <td id="recordError" class="error"></td>
                 <td></td>
             </tr>
@@ -142,17 +158,6 @@ albums.insertUI = function () {
                 document.getElementById("userRoleIdError").innerHTML = jsonObj.dbError;
                 return;
             }
-
-            /*  copy/pasting the first entry from the output of my get role API
-             {
-             "dbError": "",
-             "roleList": [
-             {
-             "userRoleId": "1",
-             "userRoleType": "Admin",
-             "errorMsg": ""
-             }, ...
-             */
 
             Utils.makePickList({
                 id: "userPickList",
@@ -233,3 +238,29 @@ albums.insertSave = function () {
     } // end processInsert function
     
 }; // end albums.insertSave
+
+
+albums.updateUI = function (albumId){
+    
+    window.location.hash = "#/albumUpdate";
+    
+    albums.insertUI(true);
+    
+    ajax2({
+            url: "webAPIs/getSingleAlbum.jsp?id=" + albumId,
+            successFn: proceed,
+            errorId: "ajaxError"
+        });
+        
+    function proceed(albumInfo){
+        
+        document.getElementById("albumId").value = albumInfo.album_id;
+        document.getElementById("albumName").value = albumInfo.album_name;
+        document.getElementById("numTracks").value = albumInfo.num_tracks;
+        document.getElementById("albumArt").value = albumInfo.album_art;
+        document.getElementById("releaseDate").value = albumInfo.release_date;
+        document.getElementById("price").value = albumInfo.suggested_price;
+        
+    }
+        
+}; // end albums.updateUI

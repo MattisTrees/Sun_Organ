@@ -1,7 +1,6 @@
 var users = {};
 
 (function () {  // This is an IIFE, an immediately executing (anonymous) function
-    //alert("I am an IIFE!");
 
     users.list = function () {
         
@@ -384,6 +383,8 @@ users.findById = function (idOfInput) {
             successFn: proceed,
             errorId: "ajaxError"
         });
+        
+        
         function proceed(obj) { // obj is what got JSON.parsed from Web API's output
             
         var webUserObj = obj.webUser;

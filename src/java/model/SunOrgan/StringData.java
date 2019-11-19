@@ -32,7 +32,7 @@ public class StringData {
             this.num_tracks = FormatUtils.plainInteger(results.getObject("num_tracks"));
             this.album_art = FormatUtils.formatString(results.getObject("album_art"));
             this.release_date = FormatUtils.formatDate(results.getObject("release_date"));
-            this.suggested_price = FormatUtils.formatDollar(results.getObject("suggested_price"));
+            this.suggested_price = FormatUtils.plainInteger(results.getObject("suggested_price"));
             this.web_user_id = FormatUtils.plainInteger(results.getObject("web_user_id"));
         } catch (Exception e) {
             this.errorMsg = "Exception thrown in model.SunOrgan.StringData (the constructor that takes a ResultSet): " + e.getMessage();
