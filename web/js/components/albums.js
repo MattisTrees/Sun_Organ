@@ -78,15 +78,15 @@ albums.list = function () {
 }; // end of function Albums.list
 
 albums.insertUI = function (isUpdate) {
-        console.log("users.inusertUI function - targetId is view");
+        console.log("albums.inusertUI function - targetId is view");
         
                 
         var albumIdRowStyle = ' style="display:none" ';
-        var saveFn = "users.insertSave()";
+        var saveFn = "albums.insertSave()";
         
         if(isUpdate){
             albumIdRowStyle = "";
-            saveFn = "users.updateSave()";
+            saveFn = "albums.updateSave()";
         }
 
         var html = `
@@ -94,9 +94,9 @@ albums.insertUI = function (isUpdate) {
         <br/>
         <table>
                <tr ${albumIdRowStyle}>
-                <td>Web User Id</td>
+                <td>Album Id</td>
                 <td><input type="text" id="albumId" disabled /></td>
-                <td id="webUserIdError" class="error"></td>
+                <td id="albumIdError" class="error"></td>
             </tr>
             <tr>
                 <td>Album Name</td>
@@ -177,7 +177,8 @@ albums.getAlbumDataFromUI = function() {
 
         // create a user object from the values that the user has typed into the page.
         var userInputObj = {
-
+            
+            "album_id" : document.getElementById("albumId").value,
             "album_name": document.getElementById("albumName").value,
             "num_tracks": document.getElementById("numTracks").value,
             "album_art": document.getElementById("albumArt").value,
@@ -221,6 +222,34 @@ albums.insertSave = function () {
     
     ajax2({
             url: "webAPIs/insertAlbumAPI.jsp?jsonData=" + newAlbum,
+            successFn: processInsert,
+            errorId: "recordError"
+        });
+        
+    
+    function processInsert(jsonObj){
+        
+        
+            if (jsonObj.errorMsg.length === 0) { // success
+                jsonObj.errorMsg = "Record successfully inserted !!!";
+            }
+
+            albums.writeErrorObjToUI(jsonObj);
+        
+    } // end processInsert function
+    
+}; // end albums.insertSave
+
+albums.updateSave = function () {
+    
+    console.log("albums.updateSave called!");
+    
+    var newAlbum = albums.getAlbumDataFromUI();
+    
+    console.log("After Calling Stringify: " + newAlbum);
+    
+    ajax2({
+            url: "webAPIs/updateAlbumAPI.jsp?jsonData=" + newAlbum,
             successFn: processInsert,
             errorId: "recordError"
         });

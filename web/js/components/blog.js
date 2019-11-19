@@ -231,6 +231,30 @@ function blog(){
     
         </div>
     
+        
+        <div class="post">
+    
+            <h1>Homework 9 - Update</h1>
+    
+            <h3>What I learned</h3>
+            <p>
+                I learned that you can reuse a lot of code from Insert for Update
+                once insert is done. It takes a couple more files and data structures
+                to get done. This is something I would like to fix about this WebApp
+                before really showing it off on my portfolio. Other than that there
+                weren't too many snags. I learned that Results require a results.next()
+                call before you can manipulate the data within which doesn't make much
+                intuitive sense but overall it was a pretty easy Homework.
+            </p>
+    
+            <h3>What if found easy/hard</h3>
+            <p>
+                Other than the confusing behavior of results this homework was very
+                close to the insert homework.
+            </p>
+    
+        </div>
+    
     </div> <!-- Blog-Wrapper div -->
         
 `;
