@@ -15,7 +15,7 @@ public class RoleView {
         StringDataList sdl = new StringDataList();
         try {
             String sql = "SELECT user_role_id, user_role_type "+
-                    "FROM user_role ORDER BY user_role_type ";  // you always want to order by something, not just random order.
+                    "FROM user_role GROUP BY user_role_type";  // you always want to order by something, not just random order.
             PreparedStatement stmt = dbc.getConn().prepareStatement(sql);
             ResultSet results = stmt.executeQuery();
             while (results.next()) {

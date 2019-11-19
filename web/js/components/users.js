@@ -53,7 +53,9 @@ var users = {};
             userList[i].role = obj.webUserList[i].userRoleId + "&nbsp;" +
                     obj.webUserList[i].userRoleType;
             userList[i].userId = obj.webUserList[i].webUserId;
+  
             userList[i].Delete = ("<h2 onclick=\"deleteUser(" + userList[i].userId + ")\">X</h2>");
+            userList[i].Update = ("<h2 onclick=\"users.updateUI(" + userList[i].userId + ")\">U</h2>");
 
             // Remove this once you are done debugging...
             userList[i].errorMsg = obj.webUserList[i].errorMsg;
@@ -155,32 +157,28 @@ users.findById = function (idOfInput) {
 
 // ***** NEW from HW 4 display data *****
 // invoke a web API passing in userId to say which record you want to delete. 
-// but also remove the row (of the clicked upon icon) from the HTML table -- if Web API sucessful... 
-    users.delete = function (userId, icon) {
-        if (confirm("Do you really want to delete user " + userId + "? ")) {
-            console.log("icon that was passed into JS function is printed on next line");
-            console.log(icon);
 
-            // HERE YOU HAVE TO CALL THE DELETE API and the success function should run the 
-            // following (delete the row that was clicked from the User Interface).
 
-            // icon's parent is cell whose parent is row 
-            var dataRow = icon.parentNode.parentNode;
-            var rowIndex = dataRow.rowIndex - 1; // adjust for oolumn header row?
-            var dataTable = dataRow.parentNode;
-            dataTable.deleteRow(rowIndex);
-            alert("Note: this version of the sample code does NOT actually invoke the delete Web API so row will reappear when you refresh the data");
-        }
-
-    }; // end of users.delete
-
-    users.insertUI = function () {
+    users.insertUI = function (isUpdate) {
         console.log("users.inusertUI function - targetId is view");
+        
+        var webUserIdRowStyle = ' style="display:none" ';
+        var saveFn = "users.insertSave()";
+        
+        if(isUpdate){
+            webUserIdRowStyle = "";
+            saveFn = "users.updateSave()";
+        }
 
         var html = `
     <div id="insertArea">
         <br/>
         <table>
+            <tr ${webUserIdRowStyle}>
+                <td>Web User Id</td>
+                <td><input type="text" id="webUserId" disabled /></td>
+                <td id="webUserIdError" class="error"></td>
+            </tr>
             <tr>
                 <td>Email Address</td>
                 <td><input type="text"  id="userEmail" /></td>
@@ -218,7 +216,7 @@ users.findById = function (idOfInput) {
             </tr>
             <tr>
                 <!-- see js/insertUser.js to see the insertUser function (make sure index.html references the js file) -->
-                <td><button onclick="users.insertSave()">Save</button></td>
+                <td><button onclick="${saveFn}">Save</button></td>
                 <td id="recordError" class="error"></td>
                 <td></td>
             </tr>
@@ -275,6 +273,7 @@ users.findById = function (idOfInput) {
         // create a user object from the values that the user has typed into the page.
         var userInputObj = {
 
+            "webUserId" : document.getElementById("webUserId").value,
             "userEmail": document.getElementById("userEmail").value,
             "userPassword": document.getElementById("userPassword").value,
             "userPassword2": document.getElementById("userPassword2").value,
@@ -339,5 +338,75 @@ users.findById = function (idOfInput) {
             writeErrorObjToUI(jsonObj);
         }
     };
+    
+    users.updateSave = function () {
+
+        console.log("users.updateSave was called");
+
+        // create a user object from the values that the user has typed into the page.
+        var myData = getUserDataFromUI();
+
+        ajax2({
+            url: "webAPIs/updateUserAPI.jsp?jsonData=" + myData,
+            successFn: processUpdate,
+            errorId: "recordError"
+        });
+        
+        function processUpdate(jsonObj) {
+
+            // the server prints out a JSON string of an object that holds field level error 
+            // messages. The error message object (conveniently) has its fiels named exactly 
+            // the same as the input data was named. 
+
+            if (jsonObj.errorMsg.length === 0) { // success
+                jsonObj.errorMsg = "User successfully updated !!!";
+            }
+
+            writeErrorObjToUI(jsonObj);
+        } // end processUpdate function
+        
+    }; // end updateSave function
+    
+    
+    users.updateUI = function (webUserId) {
+
+        // This is needed to "reset" the application's perception of the "current" link. 
+        // Otherwise, when the user tries to click on "user list" after doing a user list -> update
+        // operation, there will be no response (because link would not change). 
+        // Setting window.location.hash is like auto-clicking for the user (in code). 
+        // But also in index.html, you have to add a routing rule for this link and associate 
+        // it will a null function (a do nothing function) - to avoid a routing error.
+        window.location.hash = "#/userUpdate";
+
+        users.insertUI(true); // first param is isUpdate (boolean)
+        ajax2({
+            url: "webAPIs/getUserWithRolesAPI.jsp?id=" + webUserId,
+            successFn: proceed,
+            errorId: "ajaxError"
+        });
+        function proceed(obj) { // obj is what got JSON.parsed from Web API's output
+            
+        var webUserObj = obj.webUser;
+        var roleList = obj.roleInfo.roleList;
+        
+        //alert("Web User ID is: " + webUserObj.webUserId);
+
+        document.getElementById("webUserId").value = webUserObj.webUserId;
+        document.getElementById("userEmail").value = webUserObj.userEmail;
+        document.getElementById("userPassword").value = webUserObj.userPassword;
+        document.getElementById("userPassword2").value = webUserObj.userPassword;
+        document.getElementById("birthday").value = webUserObj.birthday;
+        document.getElementById("membershipFee").value = webUserObj.membershipFee;
+        console.log("selected role id is " + webUserObj.userRoleId);
+        Utils.makePickList({
+            id: "rolePickList", // id of <select> tag in UI
+            list: roleList, // JS array that holds objects to populate the select list
+            valueProp: "userRoleType", // field name of objects in list that hold the values of the options
+            keyProp: "userRoleId", // field name of objects in list that hold the keys of the options
+            //selectedKey: webUserObj.userRoleId  // key that is to be pre-selected (optional)
+        }); // end Utils.makePickList
+        
+        } // end proceed function
+    }; // end Users.updateUI
 
 }());  // the end of the IIFE
