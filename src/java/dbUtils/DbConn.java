@@ -1,7 +1,7 @@
 package dbUtils;
 
 import java.sql.DriverManager;
-import java.sql.Connection;
+import java.sql.*;
 
 /**
  * Wrapper class for database connection. Constructor opens connection. Close
@@ -17,21 +17,12 @@ public class DbConn {
         String dbAndPass = "FA19_3308_tuh42796?user=tuh42796&password=keipixer";
 
         try {
-            String DRIVER = "com.mysql.jdbc.Driver";
-            Class.forName(DRIVER).newInstance();
-            try {
-                // Assume you are running from home using tunneling...
-                String url = "jdbc:mysql://localhost:3307/"+dbAndPass;
-
-                // unless you are working from temple (e.g., lab computer or published)
-                if (this.isTemple()) {
-                    url = "jdbc:mysql://cis-linux2.temple.edu:3306/"+dbAndPass;
-                }
-                this.conn = DriverManager.getConnection(url);
-
-            } catch (Exception e) { // cant get the connection
-                recordError("Problem getting connection:" + e.getMessage());
-            }
+            
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/sonoo",
+                    "Matthew Jordan", "B00gnish");
+            
         } catch (Exception e) { // cant get the driver...
             recordError("Problem getting driver:" + e.getMessage());
         }

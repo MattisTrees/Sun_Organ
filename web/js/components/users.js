@@ -4,88 +4,115 @@ var users = {};
 
     users.list = function () {
         
-    // clear out whatever may be currently in the content area
-    var contentDOM = document.getElementById("view");
-    contentDOM.innerHTML = "";
+        // clear out whatever may be currently in the content area
+        var contentDOM = document.getElementById("view");
+        contentDOM.innerHTML = "";
 
-    // Remember: getting a DB error does NOT mean ajax call unsuccessful. That is a secondary error after ajax call OK.
-    ajax2({
-        url: "webAPIs/listUsersAPI.jsp",
-        successFn: success,
-        errorId: "view"
-    });
-
-    function success(obj) {
-
-        // var obj = JSON.parse(hreq.responseText); // this already done by function ajax2...
-        if (!obj) {
-            contentDOM.innerHTML += "Http Request (from AJAX call) did not parse to an object.";
-            return;
-        }
-        console.log(obj);
-
-        if (obj.dbError.length > 0) {
-            contentDOM.innerHTML += "Database Error Encountered: " + obj.dbError;
-            return;
-        }
-
-        var div = document.createElement("div");
-        div.style.textAlign = "center";
-        contentDOM.appendChild(div);
-        div.innerHTML = `
-            <h2>Web User List</h2>
-        `;
-
-        var tableDiv = document.createElement("div");
-        tableDiv.style.margin = "auto";
-        contentDOM.appendChild(tableDiv);
-
-        // tweak obj.webUserList to include only the properties you want - combine, delete, etc. 
-        var userList = [];
-        for (var i = 0; i < obj.webUserList.length; i++) {
-            userList[i] = {}; // add new empty object to array
-            userList[i].userCredentials = obj.webUserList[i].userEmail + "<br/> PW (to test Logon): " +
-                    obj.webUserList[i].userPassword;
-            userList[i].image = obj.webUserList[i].image;
-            userList[i].birthday = obj.webUserList[i].birthday;
-            userList[i].membershipFee = obj.webUserList[i].membershipFee;
-            userList[i].role = obj.webUserList[i].userRoleId + "&nbsp;" +
-                    obj.webUserList[i].userRoleType;
-            userList[i].userId = obj.webUserList[i].webUserId;
-  
-            userList[i].Delete = ("<h2 onclick=\"deleteUser(" + userList[i].userId + ")\">X</h2>");
-            userList[i].Update = ("<h2 onclick=\"users.updateUI(" + userList[i].userId + ")\">U</h2>");
-
-            // Remove this once you are done debugging...
-            userList[i].errorMsg = obj.webUserList[i].errorMsg;
-        }
-
-        // add click sortable HTML table to the content area
-
-        // ********************** function tableBuilder.build ***********************************
-        // params.list: an array of objects that are to be built into an HTML table.
-        // params.target: reference to DOM object where HTML table is to be placed (by buildTable) -- 
-        //         (this is not the id string but actual reference like you get from method getElementById()
-        // params.style: will be added as className to DOM element target,
-        // params.orderPropName (string): name of property (of objects in list) for iniial sort
-        // params.reverse (boolean): if true, initial sort will be high to low (else low to high). 
-        // params.imgWidth: any columns that hold image files will be turned into <img> tags with this width.
-
-        tableBuilder.build({
-            list: userList,
-            target: tableDiv,
-            style: "data",
-            orderPropName: "userEmail",
-            reverse: false,
-            imgWidth: "50px"
+        // Remember: getting a DB error does NOT mean ajax call unsuccessful. That is a secondary error after ajax call OK.
+        ajax2({
+            url: "webAPIs/listUsersAPI.jsp",
+            successFn: success,
+            errorId: "view"
         });
-    } // end of function success
+
+        function success(obj) {
+
+            // var obj = JSON.parse(hreq.responseText); // this already done by function ajax2...
+            if (!obj) {
+                contentDOM.innerHTML += "Http Request (from AJAX call) did not parse to an object.";
+                return;
+            }
+            console.log(obj);
+
+            if (obj.dbError.length > 0) {
+                contentDOM.innerHTML += "Database Error Encountered: " + obj.dbError;
+                return;
+            }
+
+            var div = document.createElement("div");
+            div.style.textAlign = "center";
+            contentDOM.appendChild(div);
+            div.innerHTML = `
+                <h2>Web User List</h2>
+            `;
+
+            var tableDiv = document.createElement("div");
+            tableDiv.style.margin = "auto";
+            contentDOM.appendChild(tableDiv);
+
+            // tweak obj.webUserList to include only the properties you want - combine, delete, etc. 
+            var userList = [];
+            for (var i = 0; i < obj.webUserList.length; i++) {
+                userList[i] = {}; // add new empty object to array
+                userList[i].userCredentials = obj.webUserList[i].userEmail + "<br/> PW (to test Logon): " +
+                        obj.webUserList[i].userPassword;
+                userList[i].image = obj.webUserList[i].image;
+                userList[i].birthday = obj.webUserList[i].birthday;
+                userList[i].membershipFee = obj.webUserList[i].membershipFee;
+                userList[i].role = obj.webUserList[i].userRoleId + "&nbsp;" +
+                        obj.webUserList[i].userRoleType;
+                userList[i].userId = obj.webUserList[i].webUserId;
+
+                userList[i].Delete = ("<h2 onclick=\"users.deleteUser(" + userList[i].userId + ")\">X</h2>");
+                userList[i].Update = ("<h2 onclick=\"users.updateUI(" + userList[i].userId + ")\">U</h2>");
+
+                // Remove this once you are done debugging...
+                userList[i].errorMsg = obj.webUserList[i].errorMsg;
+            }
+
+            // add click sortable HTML table to the content area
+
+            // ********************** function tableBuilder.build ***********************************
+            // params.list: an array of objects that are to be built into an HTML table.
+            // params.target: reference to DOM object where HTML table is to be placed (by buildTable) -- 
+            //         (this is not the id string but actual reference like you get from method getElementById()
+            // params.style: will be added as className to DOM element target,
+            // params.orderPropName (string): name of property (of objects in list) for iniial sort
+            // params.reverse (boolean): if true, initial sort will be high to low (else low to high). 
+            // params.imgWidth: any columns that hold image files will be turned into <img> tags with this width.
+
+                tableBuilder.build({
+                    list: userList,
+                    target: tableDiv,
+                    style: "data",
+                    orderPropName: "userEmail",
+                    reverse: false,
+                    imgWidth: "50px"
+            });
+        } // end of function success
 
 
-}; // end of function users.list
+    }; // end of function users.list
+
+    users.deleteUser = function (user_id){
+
+        console.log("deleteThis called on " + user_id + "!");
+
+        if(confirm("Are you sure you want to delete this album?")){
+
+            console.log("Deleting album...");
+
+            ajax2({
+                url: "webAPIs/deleteUser.jsp?UserId=" + user_id,
+                successFn: success,
+                errorId: "view"
+            });
+
+        } else {
+            console.log("Deletion Cancelled");
+        } // end if/else
+
+
+        function success(obj){
+
+            alert("User successfully deleted!");
+
+        } // end success function
+
+    } // end deleteUser function
 
 // Inject the UI that allows the user to type in an id and click submit.
-users.findUI = function () {
+    users.findUI = function () {
 
     console.log("users.findUI was called");
 
@@ -104,7 +131,7 @@ users.findUI = function () {
 };
 
 // This public function of global object will be called when the user clicks the button created just above.
-users.findById = function (idOfInput) {
+    users.findById = function (idOfInput) {
 
     console.log("users.findBtUd was called");
 
