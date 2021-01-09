@@ -14,10 +14,10 @@ function blog(){
 
             <h3>What if found easy/hard</h3>
             <p>
-                Homework 1 was huge challenge for me. CSS is extremely frustrating as
-                there are just too many attributes to mess around with and it's not always
+                Homework 1 was huge challenge for me. CSS can be frustrating as
+                there are many attributes to mess around with and it's not always
                 clear what you should be manipulating. Float is a difficult concept to
-                wrap your head around, display has a 'none' value but it 'initial' value
+                wrap your head around, display has a 'none' value but it's 'initial' value
                 doesn't seem to undo the invisibility, neither does block or any of the
                 other values (in my experience, I realize I was most likely doing something
                 wrong).
@@ -44,13 +44,9 @@ function blog(){
 
             <h3>What if found easy/hard</h3>
             <p>
-                SQL is a little bit of a challenge to me. I only recently learned
-                that servers and databases are essential know-how to get a job in 
-                this field. Luckily after this semester I'll be one step closer to 
-                having a full knowledge base that will be practical in the field. 
-                I'm just not excited at the prospect of learning a whole 'nother
-                language that works radically differently than actual programming
-                languages.
+                SQL is still a bit new to me. Putting together databases seems like
+                pretty intuitive way to put tables together. The next step to learn
+                is just how to call and display this information.
             </p>
     
         </div>
