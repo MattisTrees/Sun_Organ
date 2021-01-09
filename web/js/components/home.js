@@ -21,8 +21,7 @@ function home(){
                 <article class="img-info">
                     <h2>YAY!</h2>
                     <p>
-                        sUN oRGAN IS A BAND FROM pHILADELPHIA, pa. tHEY PLAYS SHOWS N STUFF
-                        AND DO A LOT OF OTHER STUFF TO. lIKE DRINK AND FIGHT. hERE WE WILL
+                        sUN oRGAN IS A BAND FROM pHILADELPHIA, pa. tHEY PLAYS SHOWS. hERE WE WILL
                         HOST A LITTLE BIT OF INFO ABOUT THE BAND AND HOPEFULLY EVENTUALLY
                         HOST THE ALBUMS FOR INFINITE STREAMING AND UPDATES ON SHOWS AND 
                         PICTURES OF SHOWS. uNTIL THEN YOU CAN VISIT  
